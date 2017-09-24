@@ -1,0 +1,5 @@
+bower install purescript-maybe --save
+bower install purescript-arrays --save
+bower install purescript-strings --save
+bower install purescript-foldable-traversable --save
+bower install purescript-console --save

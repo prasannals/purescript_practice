@@ -53,4 +53,4 @@ findEntry fName lName addBook = head $ filter filterNames addressBook1 where
 
 
 -- | main = log "Hello World"
--- | main = log (map entryStr (findEntry "Prasanna" "L S" addressBook1)) 
+-- | main = log (map entryStr (findEntry "Prasanna" "L S" addressBook1))
