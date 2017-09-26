@@ -1,12 +1,12 @@
 module Main where
 
-import Prelude
+import Prelude (Unit, map, ($), (+), (<>), (==), (-))
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
 import Data.Array
 import Data.Foldable (foldr)
 import Partial.Unsafe (unsafePartial)
-import Data.Maybe
+import Data.Maybe (Maybe, fromJust)
 
 type Contact = {name :: String, number :: String}
 
@@ -33,9 +33,17 @@ setContact contacts index name number = newContacts where
     newContacts = (take index contacts) <> [newContact] <> (drop (index + 1) contacts)
 
 
-getContact :: (Array Contact) -> String -> Contact
-getContact contacts name = unsafePartial fromJust $ unsafePartial head $ filter (\c -> c.name == name) contacts
+getContact :: (Array Contact) -> String -> Maybe Contact
+getContact contacts name = unsafePartial head $ filter (\c -> c.name == name) contacts
 
+contactEquals :: Maybe Contact -> String -> Boolean
+contactEquals contact name = (unsafePartial fromJust contact).name == name
+
+delContact :: (Array Contact) -> String -> (Array Contact)
+delContact contacts name = newContacts where
+    indices = filter (\i -> (contactEquals (contacts !! i) (name) ) ) (0..((length contacts) - 1))
+    index = unsafePartial fromJust $ unsafePartial $ head indices
+    newContacts = take index contacts <> drop (index + 1) contacts
 
 main :: forall e. Eff (console :: CONSOLE | e) Unit
 main = do
